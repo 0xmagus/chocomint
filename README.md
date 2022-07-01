@@ -4,9 +4,19 @@ Mass minter for nfts. Creates temporary contracts that acts as a proxy users to 
 
 ### Quickstart
 
-`forge init`
+```
+forge init
+```
 
 ### Testing in Mainnet
 
 Testing on mainnet is done at a previous block to simulate valid order.
-`forge test --fork-url https://eth-mainnet.alchemyapi.io/v2/< your api key > --fork-block-number 14879473 -vvvv --gas-report`
+
+```
+forge test --fork-url https://eth-mainnet.alchemyapi.io/v2/< your api key > \
+--fork-block-number 14879473 -vvvv --gas-report
+```
+
+###
+
+TODO: Add admin cli tool to deploy contract, and execute mints.

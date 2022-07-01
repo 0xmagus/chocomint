@@ -5,17 +5,11 @@ import "lib/forge-std/src/console.sol";
 
 interface IERC721 {
   function balanceOf(address owner) external view returns (uint256);
-  function ownerOf(uint256 tokenId) external view returns (address);
-  function tokensOfOwner(address owner) external view returns (uint256[] memory);
-  
-    function transferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) external;
+  function transferFrom(address from, address to, uint256 tokenId) external;
 }
 
 contract TempUser {
+    // Assumes ids in collection are minted in order
     uint256 startId = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
 
     function execute(address _target, bytes calldata _payload, address _owner) external payable {
