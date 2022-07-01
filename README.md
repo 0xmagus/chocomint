@@ -17,6 +17,6 @@ forge test --fork-url https://eth-mainnet.alchemyapi.io/v2/< your api key > \
 --fork-block-number 14879473 -vvvv --gas-report
 ```
 
-###
+### Todo
 
-TODO: Add admin cli tool to deploy contract, and execute mints.
+- Add admin cli tool to deploy contract, and execute mints.
