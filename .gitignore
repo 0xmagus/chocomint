@@ -1,4 +1,4 @@
-cache/*
+cache
 .env
 node_modules
-out/*
+out
