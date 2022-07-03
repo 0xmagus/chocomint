@@ -1,5 +1,4 @@
-cache
-.env
-node_modules
-out
 broadcast
+cache
+out
+.env

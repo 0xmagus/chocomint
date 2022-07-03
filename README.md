@@ -26,7 +26,7 @@ forge test --fork-url https://eth-mainnet.alchemyapi.io/v2/< your api key > \
 
 ### Deploy
 
-Operate on root project directory.
+Operate on root project directory. Requires eth in the user account for gas.
 
 #### ChocoMint Deployment
 
@@ -51,7 +51,8 @@ NOTE: Purposely do not verify contract for obfuscation.
 Deploy implementation contract on testnet
 
 ```
-source .env && forge script script/Admin.s.sol:DeployImplementationUser --rpc-url $TEST_RPC_URL  --private-key $TEST_PRIVATE_KEY --broadcast -vvvv
+source .env && forge script script/Admin.s.sol:DeployImplementationUser --rpc-url $TEST_RPC_URL \
+--private-key $TEST_PRIVATE_KEY --etherscan-api-key $ETHERSCAN_API_KEY --broadcast -vvvv
 ```
 
 Deploy implementation contract on mainnnet
