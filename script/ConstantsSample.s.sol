@@ -7,9 +7,9 @@ contract Constants {
      * INITIAL SETUP ONLY
      */
     // Owner contract address
-    address public OWNER = 0xFAc98458dCe8a871fBE6932275D3B92bbd2AD9c4;
+    address public OWNER = address(0);
     // ChocoMint contract address
-    address public CHOCOMINT = 0x9D6be7b6D9884A1f84e28e2041F941e6599A6307;
+    address public CHOCOMINT = address(0);
     // Implementation contract address
     address public IMPLEMENTATION_USER = address(0);
     // Proxie addresses. Add after creation.
@@ -19,16 +19,16 @@ contract Constants {
 
 
     /**
-     * SPECIFIC MINT
+     * EDIT FOR EACH SPECIFIC MINT
      */
     // Set these to deploy a specific mint
-    address public MINT_ADDRESS =  0x9D6be7b6D9884A1f84e28e2041F941e6599A6307;
+    address public MINT_ADDRESS = address(0);
     // Signiture of the minting function
     string public MINT_FUNCTION_SIGNATURE = "mint(uint256)";
     // Specify parameters for the minting function
     bytes public MINT_PAYLOAD = abi.encodeWithSignature(MINT_FUNCTION_SIGNATURE, 1);
     // Numbers of times to call the mint function by different proxies
-    uint256 public MINT_COUNT = 5;
+    uint256 public MINT_COUNT = 1;
     // Total eth to send to chocomint for all mints
     uint256 public TOTAL_VALUE = 0 ether;
     // Eth for a single minting call

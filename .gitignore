@@ -2,3 +2,6 @@ broadcast
 cache
 out
 .env
+
+# prevent constants file from getting pushed
+script/Constants.s.sol
