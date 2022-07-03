@@ -7,10 +7,13 @@ import "../src/ChocoMint.sol";
 import "../src/ImplementationUser.sol";
 
 contract ChocoMintTest is Test {
-    Vm public VM;
+    
+    function setUp() public {}
 
-    function setUp() public {
-        VM = Vm(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+    function testCreateProxy() public {
+        ChocoMint chocoMint = new ChocoMint();
+        address[] memory proxies = chocoMint.createProxy(1);
+        assertEq(proxies.length, 1);
     }
 
     function testExecute() public {
@@ -36,27 +39,8 @@ contract ChocoMintTest is Test {
         assertEq(IERC721(mintTarget).balanceOf(address(this)), 200);
     }
 
-    function testCreateProxy() public {
-        ChocoMint chocoMint = new ChocoMint();
-        address[] memory proxies = chocoMint.createProxy(1);
-        assertEq(proxies.length, 1);
-    }
-
-    function testProxyUser() public {
-        address impUser = address(new ImplementationUser());
-        address proxy = address(new ProxyUser());
-
-        address mintTarget = 0x9F9B2B8e268d06DC67F0f76627654b80e219e1d6; // pieceOfShit contract
-        bytes memory mintPayload = abi.encodeWithSignature("mint(uint32)", 2); // mint 2
-        bytes memory impPayload = abi.encodeWithSignature(
-            "mint(address,address,bytes)", 
-            mintTarget, 
-            address(this),
-            mintPayload);
-        bytes memory proxyPayload = abi.encodePacked(abi.encode(impUser), impPayload);
-
-        (bool _success, bytes memory _response) = proxy.call(proxyPayload);
-        assertTrue(_success); _response;
-        assertEq(IERC721(mintTarget).balanceOf(address(this)), 2);
-    }
+    function testExecuteWrongBlock() public {}
+    function testExecuteCoinbase() public {}
+    function testExecuteNotEnoughCoinbase() public {}
+    function testExecuteLeftOverEth() public {}
 }
