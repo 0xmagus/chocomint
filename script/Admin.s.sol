@@ -39,6 +39,7 @@ contract DeployProxyUsers is Script {
         uint256 proxiesToCreate = constants.PROXIE_LIMIT() - constants.PROXIE_COUNT();
         require(proxiesToCreate > 0, "Proxy limit has been reached");
         
+        console2.log("Attempting to create ProxyUser contracts", proxiesToCreate);
         vm.startBroadcast();
         address[] memory proxies = ChocoMint(constants.CHOCOMINT()).createProxy(proxiesToCreate);
         vm.stopBroadcast();
@@ -52,12 +53,13 @@ contract DeployProxyUsers is Script {
 contract Mint is Script {
     function run() external {
         Constants constants = new Constants();
+        uint256 mintCount = constants.MINT_COUNT();
 
         require(constants.OWNER() != address(0), "Invalid owner specified");
         require(constants.CHOCOMINT() != address(0), "ChocoMint contract not created");
         require(constants.IMPLEMENTATION_USER() != address(0),  "ImplementationUser contract not created");
-        require(constants.PROXIE_COUNT() >= constants.MINT_COUNT(), "Not enough proxy contracts to satisfy mint count");
-        require(constants.VALUE_PER_MINT()*constants.MINT_COUNT() <= constants.TOTAL_VALUE(), "Not enough eth for all mints");
+        require(constants.PROXIE_COUNT() >= mintCount, "Not enough proxy contracts to satisfy mint count");
+        require(constants.VALUE_PER_MINT()*mintCount <= constants.TOTAL_VALUE(), "Not enough eth for all mints");
 
         address mintTarget = constants.MINT_ADDRESS();
         bytes memory mintPayload = constants.MINT_PAYLOAD();
@@ -70,8 +72,8 @@ contract Mint is Script {
         // Payload to proxy user.
         bytes memory proxyPayload = abi.encodePacked(abi.encode(constants.IMPLEMENTATION_USER()), impPayload);
         // Copy the proxy addresses based on number of proxies to mint.
-        address[] memory proxies = new address[](constants.MINT_COUNT());
-        for (uint256 i = 0; i < constants.MINT_COUNT(); i++) {
+        address[] memory proxies = new address[](mintCount);
+        for (uint256 i = 0; i < mintCount; i++) {
             proxies[i] = constants.PROXIES(i);
         }
 

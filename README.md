@@ -25,7 +25,7 @@ source .env && forge test --fork-url $MAIN_RPC_URL --fork-block-number 14879473 
 
 Operate on root project directory. Requires eth in the user account for gas. If testnet get eth with a faucet.
 
-#### ChocoMint Deployment
+#### 1. Deploy ChocoMint
 
 Deploy minting contract on testnet
 
@@ -43,7 +43,7 @@ source .env && forge run script/Admin.s.sol:DeployChocoMint --rpc-url $MAIN_RPC_
 
 NOTE: Purposely do not verify contract for obfuscation.
 
-#### ImplementationUser Deployment
+#### 2. Deploy ImplementationUser
 
 Deploy implementation contract on testnet
 
@@ -56,5 +56,39 @@ Deploy implementation contract on mainnnet
 
 ```
 source .env && forge script script/Admin.s.sol:DeployImplementationUser --rpc-url $MAIN_RPC_URL  \
+--private-key $MAIN_PRIVATE_KEY --etherscan-api-key $ETHERSCAN_API_KEY --broadcast -vvvv
+```
+
+#### 3. Deploy ProxyUsers
+
+Deploy proxy user contracts on testnet
+
+```
+source .env && forge script script/Admin.s.sol:DeployProxyUsers --rpc-url $TEST_RPC_URL \
+--private-key $TEST_PRIVATE_KEY --etherscan-api-key $ETHERSCAN_API_KEY --broadcast -vvvv
+```
+
+Deploy proxy user contracts on mainnnet
+
+```
+source .env && forge script script/Admin.s.sol:DeployProxyUsers --rpc-url $MAIN_RPC_URL  \
+--private-key $MAIN_PRIVATE_KEY --etherscan-api-key $ETHERSCAN_API_KEY --broadcast -vvvv
+```
+
+#### 4. Mint with Proxies
+
+Make sure settings for a specific mint is made in script/Constants.s.sol
+
+Mint by proxies on testnet
+
+```
+source .env && forge script script/Admin.s.sol:Mint --rpc-url $TEST_RPC_URL \
+--private-key $TEST_PRIVATE_KEY --etherscan-api-key $ETHERSCAN_API_KEY --broadcast -vvvv
+```
+
+Mint by proxies on testnet
+
+```
+source .env && forge script script/Admin.s.sol:Mint --rpc-url $MAIN_RPC_URL  \
 --private-key $MAIN_PRIVATE_KEY --etherscan-api-key $ETHERSCAN_API_KEY --broadcast -vvvv
 ```
