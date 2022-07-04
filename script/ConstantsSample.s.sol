@@ -29,20 +29,18 @@ contract Constants {
     bytes public MINT_PAYLOAD = abi.encodeWithSignature(MINT_FUNCTION_SIGNATURE, 1);
     // Numbers of times to call the mint function by different proxies
     uint256 public MINT_COUNT = 1;
-    // Total eth to send to chocomint for all mints
-    uint256 public TOTAL_VALUE = 0 ether;
     // Eth for a single minting call
     uint256 public VALUE_PER_MINT = 0 ether;
-
     // Specific blocknumber to allow mint (flashbots only), default 0 for no specific block requirement
     uint256 public BLOCK_NUMBER = 0;
     // Eth to send to coinbase address (flashbots only)
     uint256 public TO_COINBASE = 0 ether;
 
 
-
     /**
      * AUTOMATICALLY GENERATED (DO NOT EDIT)
      */
     uint256 public PROXIE_COUNT = PROXIES.length;
+     // Total eth to send to chocomint for all mints and miner tip
+    uint256 public TOTAL_VALUE = VALUE_PER_MINT*MINT_COUNT + TO_COINBASE;
 }

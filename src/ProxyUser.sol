@@ -15,8 +15,6 @@ contract ProxyUser {
         }
     }
 
-    receive() external payable{}
-
     function onERC721Received(address, address, uint256 id, bytes calldata) external returns (bytes4) {
         assembly {
             if eq(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff, sload(0)) {
@@ -25,4 +23,6 @@ contract ProxyUser {
         }
         return 0x150b7a02;
     }
+
+    receive() external payable {}
 }

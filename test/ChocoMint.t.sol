@@ -2,22 +2,27 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
+import "forge-std/Vm.sol";
 import "forge-std/console2.sol";
 import "../src/ChocoMint.sol";
 import "../src/ImplementationUser.sol";
 
 contract ChocoMintTest is Test {
-    
-    function setUp() public {}
+    ChocoMint public chocoMint;
+
+    function setUp() public {
+        chocoMint = new ChocoMint();
+        vm.deal(address(this), 1 ether);
+        vm.deal(address(chocoMint), 0);
+        vm.deal(address(block.coinbase), 0);
+    }
 
     function testCreateProxy() public {
-        ChocoMint chocoMint = new ChocoMint();
         address[] memory proxies = chocoMint.createProxy(1);
         assertEq(proxies.length, 1);
     }
 
-    function testExecute() public {
-        ChocoMint chocoMint = new ChocoMint();
+    function testExecuteMassMint() public {
         address impUser = address(new ImplementationUser());
         address[] memory proxies = chocoMint.createProxy(100);
 
@@ -39,8 +44,33 @@ contract ChocoMintTest is Test {
         assertEq(IERC721(mintTarget).balanceOf(address(this)), 200);
     }
 
-    function testExecuteWrongBlock() public {}
-    function testExecuteCoinbase() public {}
-    function testExecuteNotEnoughCoinbase() public {}
-    function testExecuteLeftOverEth() public {}
+    function testFailWrongBlock() public {
+        address[] memory proxies = new address[](0);
+        uint256 targetBlock = 1;
+
+        chocoMint.execute(0, "", proxies, targetBlock, 0);
+    }
+
+    function testCoinbaseTransfer() public {
+        address[] memory proxies = new address[](0);
+        uint256 prevCoinbaseBalance = block.coinbase.balance;
+
+        chocoMint.execute{value: 1 ether}(0, "", proxies, 0, 1 ether);
+        assertEq(block.coinbase.balance - prevCoinbaseBalance, 1 ether);
+    }
+
+    function testFailNotEnoughEthToCoinbase() public {
+        address[] memory proxies = new address[](0);
+
+        chocoMint.execute(0, "", proxies, 0, 1 ether);
+    }
+
+    function testReturnsLeftOverEth() public {        
+        address[] memory proxies = new address[](0);
+
+        chocoMint.execute{value: 1 ether}(0, "", proxies, 0, 0);
+        assertEq(address(this).balance, 1 ether);
+    }
+
+    receive() external payable {}
 }

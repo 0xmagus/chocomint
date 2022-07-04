@@ -2,6 +2,7 @@
 pragma solidity ^0.8.13;
 
 import "./ProxyUser.sol";
+import "forge-std/console2.sol";
 
 contract ChocoMint {
     address private immutable owner;
@@ -37,7 +38,8 @@ contract ChocoMint {
             require(_success); _response;
             unchecked {++i;}
         }
-        if (_toCoinbase > 0 && address(this).balance >= _toCoinbase) {
+        require(address(this).balance >= _toCoinbase);
+        if (_toCoinbase > 0) {
             block.coinbase.transfer(_toCoinbase);
         }
         if (address(this).balance > 0) {
