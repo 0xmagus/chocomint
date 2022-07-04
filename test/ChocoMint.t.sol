@@ -3,7 +3,6 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
-import "forge-std/console2.sol";
 import "../src/ChocoMint.sol";
 import "../src/ImplementationUser.sol";
 

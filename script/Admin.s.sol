@@ -39,7 +39,6 @@ contract DeployProxyUsers is Script {
         uint256 proxiesToCreate = constants.PROXIE_LIMIT() - constants.PROXIE_COUNT();
         require(proxiesToCreate > 0, "Proxy limit has been reached");
         
-        console2.log("Attempting to create ProxyUser contracts", proxiesToCreate);
         vm.startBroadcast();
         address[] memory proxies = ChocoMint(constants.CHOCOMINT()).createProxy(proxiesToCreate);
         vm.stopBroadcast();
@@ -59,7 +58,7 @@ contract Mint is Script {
         require(constants.CHOCOMINT() != address(0), "ChocoMint contract not created");
         require(constants.IMPLEMENTATION_USER() != address(0),  "ImplementationUser contract not created");
         require(constants.PROXIE_COUNT() >= mintCount, "Not enough proxy contracts to satisfy mint count");
-        require(constants.VALUE_PER_MINT()*mintCount <= constants.TOTAL_VALUE(), "Not enough eth for all mints");
+        require(constants.VALUE_PER_MINT()*mintCount <= constants.TOTAL_VALUE(), "Not enough ETH for all mints");
 
         address mintTarget = constants.MINT_ADDRESS();
         bytes memory mintPayload = constants.MINT_PAYLOAD();
