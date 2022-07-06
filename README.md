@@ -37,7 +37,7 @@ source .env && forge script script/Admin.s.sol:DeployChocoMint --rpc-url $TEST_R
 Deploy minting contract on mainnet
 
 ```
-source .env && forge run script/Admin.s.sol:DeployChocoMint --rpc-url $MAIN_RPC_URL  \
+source .env && forge script script/Admin.s.sol:DeployChocoMint --rpc-url $MAIN_RPC_URL  \
 --private-key $MAIN_PRIVATE_KEY --etherscan-api-key $ETHERSCAN_API_KEY --broadcast -vvvv
 ```
 

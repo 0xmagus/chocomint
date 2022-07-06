@@ -21,12 +21,12 @@ contract ChocoMintTest is Test {
         assertEq(proxies.length, 1);
     }
 
-    function testExecuteMassMint() public {
+    function testExecuteMassMint_safeTransfer() public {
         address impUser = address(new ImplementationUser());
         address[] memory proxies = chocoMint.createProxy(100);
 
-        // Test on mint of PieceOfShit NFT collection
-        uint256 value = 0; // free mint no ether in this case
+        // Test on mint PieceOfShit NFT collection
+        uint256 value = 0; // free mint
         address mintTarget = 0x9F9B2B8e268d06DC67F0f76627654b80e219e1d6; // pieceOfShit contract
         bytes memory mintPayload = abi.encodeWithSignature("mint(uint32)", 2); 
         bytes memory impPayload = abi.encodeWithSignature(
@@ -36,11 +36,18 @@ contract ChocoMintTest is Test {
             mintPayload);
         bytes memory proxyPayload = abi.encodePacked(abi.encode(address(impUser)), impPayload);
 
-        uint256 targetBlock = 14879473; // used for flashbots to prevent uncled tx to get confirmed
+        uint256 targetBlock = 0; // used for flashbots to prevent uncled tx to get confirmed
         uint256 toCoinbase = 0; // none provided to miner
 
         chocoMint.execute(value, proxyPayload, proxies, targetBlock, toCoinbase);
         assertEq(IERC721(mintTarget).balanceOf(address(this)), 200);
+    }
+
+    function testCorrectBlock() public {
+        address[] memory proxies = new address[](0);
+        uint256 targetBlock = 14879473;
+
+        chocoMint.execute(0, "", proxies, targetBlock, 0);
     }
 
     function testFailWrongBlock() public {
