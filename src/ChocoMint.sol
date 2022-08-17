@@ -16,7 +16,11 @@ contract ChocoMint {
         owner = msg.sender;
     }
 
-    function createProxy(uint256 amount) external onlyOwner returns (address[] memory) {
+    function createProxy(uint256 amount)
+        external
+        onlyOwner
+        returns (address[] memory)
+    {
         address[] memory proxyAddresses = new address[](amount);
         for (uint256 i = 0; i < amount; i++) {
             proxyAddresses[i] = address(new ProxyUser());
@@ -25,18 +29,23 @@ contract ChocoMint {
     }
 
     function execute(
-        uint256 _value, 
+        uint256 _value,
         bytes calldata _payload,
         address[] calldata proxies,
         uint256 _targetBlock,
         uint256 _toCoinbase
-    ) external onlyOwner payable {
+    ) external payable onlyOwner {
         require(_targetBlock == block.number || _targetBlock == 0);
         uint256 loops = proxies.length;
-        for (uint256 i = 0; i < loops;) {
-            (bool _success, bytes memory _response) = proxies[i].call{value: _value}(_payload);
-            require(_success); _response;
-            unchecked {++i;}
+        for (uint256 i = 0; i < loops; ) {
+            (bool _success, bytes memory _response) = proxies[i].call{
+                value: _value
+            }(_payload);
+            require(_success);
+            _response;
+            unchecked {
+                ++i;
+            }
         }
         require(address(this).balance >= _toCoinbase);
         if (_toCoinbase > 0) {
